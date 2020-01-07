@@ -1,6 +1,12 @@
-document.getElementById('loan-form').addEventListener('submit', calculateResults)
+document.getElementById('loan-form').addEventListener('submit', function () {
+  document.getElementById('results').style.display = 'none'
+  document.getElementById('loading').style.display = 'block'
 
-function calculateResults(event) {
+  setTimeout(calculateResults, 2000)
+  event.preventDefault()
+})
+
+function calculateResults() {
   const amount = document.getElementById('amount')
   const interest = document.getElementById('interest')
   const years = document.getElementById('years')
@@ -19,17 +25,19 @@ function calculateResults(event) {
     monthlyPayment.value = monthly.toFixed(2)
     totalPayment.value = (monthly * calculatedPayments).toFixed(2)
     totalInterest.value = ((monthly * calculatedPayments) - principal).toFixed(2)
+    document.getElementById('results').style.display = 'block'
+
   } else {
     showError('Please type numbers')
   }
-  event.preventDefault()
+  document.getElementById('loading').style.display = 'none'
 }
 
 function showError(error) {
   const errorDiv = document.createElement('div')
 
   const card = document.querySelector('.card')
-  const heading =  document.querySelector('.heading')
+  const heading = document.querySelector('.heading')
 
   errorDiv.className = 'alert alert-danger'
 
@@ -37,7 +45,7 @@ function showError(error) {
 
   card.insertBefore(errorDiv, heading)
 
-  //setTimeout(clearError, 3000)
+  setTimeout(clearError, 3000)
 }
 
 function clearError() {
